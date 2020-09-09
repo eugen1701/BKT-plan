@@ -1,0 +1,67 @@
+#include <fstream>
+
+using namespace std;
+ofstream out("traseucal.out");
+const int dx[]={1, -1, 2, 2, 1, -1, -2, -2};
+const int dy[]={-2, -2, 1, -1, 2, 2, 1, -1};
+#define nmax 10
+int a[nmax][nmax], b[nmax][nmax], n, m; // prima matrice este cea citita si pe a doua construim solutiile
+void citire()
+{
+    int i, j;
+    ifstream in("traseucal.in");
+    in>>n>>m;
+    for(i=0;i<n;i++)
+        for(j=0;j<m;j++)
+            in>>a[i][j];
+    in.close();
+}
+int bune(int i, int j)
+{
+    return(i>=0 && i<n && j>=0 && j<m);
+}
+int solutie(int i, int j)
+{
+    return(i==n-1 && j==m-1);
+}
+void afis()
+{
+    int i, j;
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<m;j++)
+            out<<b[i][j]<<" ";
+        out<<endl;
+    }
+    out<<endl;
+}
+void bkt(int pas, int i, int j)
+{
+    int k, ii, jj;
+    for(k=0; k<8; k++)
+    {
+        ii=i+dx[k];
+        jj=j+dy[k];
+        if(bune(ii, jj))
+        {
+            if(a[ii][jj]==0 and b[ii][jj]==0)
+                {b[ii][jj]=pas;
+                if(solutie(ii, jj))
+                    {
+                        afis();
+                        break;
+                    }
+                bkt(pas+1, ii, jj);
+                b[ii][jj]=0;
+    }
+}
+}
+}
+int main()
+{
+    citire();
+    b[0][0]=1;
+    bkt(2, 0, 0);
+    out.close();
+    return 0;
+}
